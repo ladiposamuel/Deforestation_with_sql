@@ -39,4 +39,55 @@ WHERE FA.forest_area_sqkm <
   (SELECT MAX(FA_2.forest_area_sqkm) 
    FROM Forest_area AS FA_2
    WHERE FA_2.COUNTRY_CODE = FA.COUNTRY_CODE);
+```
+![1](https://github.com/user-attachments/assets/e29e9831-ae8d-4c73-a9a4-d28ba618f3e3)
 
+### 2. Show the income groups of countries having total area ranging from 75,000 to 150,000 square meter?
+```sql
+SELECT L.country_name, income_group, total_area_sq_mi FROM Region AS R
+JOIN Land_Area AS L
+ON R.country_code = L.country_code
+WHERE total_area_sq_mi BETWEEN 75000 AND 150000;
+```
+![2](https://github.com/user-attachments/assets/e1dce274-c399-45ff-9fd5-fdd25e5fb14b)
+
+### 3. Calculate average area in square miles for countries in the 'upper middle income region'. Compare the result with the rest of the income categories.
+```sql
+SELECT AVG(L.total_area_sq_mi) AS avg_total_area_sq_mi
+FROM Region AS R
+JOIN Land_Area AS L
+ON R.country_code = L.country_code
+WHERE R.income_group = 'Upper middle income';
+```
+![3_1](https://github.com/user-attachments/assets/2f7f0853-cbbe-433c-b971-c4a3cb533367)
+
+```sql
+SELECT AVG(L.total_area_sq_mi) AS avg_total_area_sq_mi
+FROM Region AS R
+JOIN Land_Area AS L
+ON R.country_code = L.country_code
+WHERE R.income_group != 'Upper middle income';
+```
+![3_2](https://github.com/user-attachments/assets/e448cf91-4584-42bc-95ad-2ec7b9201ee6)
+
+### 4. Determine the total forest area in square km for countries in the 'high income' group. Compare result with the rest of the income categories.
+
+```sql
+SELECT SUM(forest_area_sqkm) AS total_forest_sqkm
+FROM Region AS R
+JOIN Forest_Area AS F
+ON R.country_code = F.country_code
+WHERE income_group = 'High income';
+```
+
+![4_1](https://github.com/user-attachments/assets/2077eca1-7d14-4b1d-aa0d-844b9115f1c4)
+
+```sql
+SELECT SUM(forest_area_sqkm) AS total_forest_sqkm
+FROM Region AS R
+JOIN Forest_Area AS F
+ON R.country_code = F.country_code
+WHERE income_group != 'High income';
+```
+
+![4_2](https://github.com/user-attachments/assets/cd17f43b-1975-4887-abfe-9b8fb3c7dadb)
