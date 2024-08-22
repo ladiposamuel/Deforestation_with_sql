@@ -91,3 +91,21 @@ WHERE income_group != 'High income';
 ```
 
 ![4_2](https://github.com/user-attachments/assets/cd17f43b-1975-4887-abfe-9b8fb3c7dadb)
+
+### 5. Show countries from each region(continent) having the highest total forest areas.
+```sql
+WITH ForestArea AS 
+(SELECT r.REGION, fa.COUNTRY_NAME, SUM(fa.forest_area_sqkm) AS total_forest_area,
+	   ROW_NUMBER() OVER (PARTITION BY r.region ORDER BY SUM(fa.forest_area_sqkm) DESC) AS ranking
+    FROM Forest_area AS fa
+    JOIN REGION AS r ON fa.COUNTRY_CODE = r.COUNTRY_CODE
+    GROUP BY r.region, fa.COUNTRY_NAME)
+SELECT region, COUNTRY_NAME, total_forest_area
+FROM ForestArea
+WHERE ranking = 1;
+```
+![5](https://github.com/user-attachments/assets/309be35d-72ee-48fd-bbd8-5f1969f313b6)
+
+
+
+
